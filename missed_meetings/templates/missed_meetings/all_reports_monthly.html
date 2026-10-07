@@ -1,0 +1,53 @@
+{% extends "allianceauth/base.html" %}
+
+{% block page_title %}All missed meeting reports{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>All missed meeting reports</h1>
+    <h2>{{ selected_month|date:"F Y" }}</h2>
+    <p>{{ report_count }} meeting{{ report_count|pluralize }} reported by {{ member_count }} member{{ member_count|pluralize }}</p>
+    <nav aria-label="Report months">
+        {% if previous_month %}
+        <a href="{% url 'missed_meetings:all_reports_month' previous_month.year previous_month.month %}">Previous month</a>
+        {% endif %}
+        {% if next_month %}
+        <a href="{% url 'missed_meetings:all_reports_month' next_month.year next_month.month %}">Next month</a>
+        {% endif %}
+    </nav>
+
+    {% if reports %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Meeting date</th>
+                {% if can_change_reports or can_delete_reports %}
+                <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.user }}</td>
+                <td>{{ report.meeting_date|date:"F j, Y" }}</td>
+                {% if can_change_reports or can_delete_reports %}
+                <td>
+                    {% if can_change_reports %}
+                    <a href="{% url 'missed_meetings:edit_report' report.pk %}">Edit</a>
+                    {% endif %}
+                    {% if can_delete_reports %}
+                    <a href="{% url 'missed_meetings:delete_report' report.pk %}">Delete</a>
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No meetings were reported for this month.</p>
+    {% endif %}
+</div>
+{% endblock %}

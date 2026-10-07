@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aa-missed-meetings"
+version = "0.1.0"
+description = "An Alliance Auth app for reporting missed meetings"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["allianceauth>=4.0"]
+
+[tool.setuptools.packages.find]
+include = ["missed_meetings*"]
+
+[tool.setuptools.package-data]
+missed_meetings = ["templates/**/*.html"]

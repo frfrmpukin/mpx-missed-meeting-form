@@ -1,0 +1,15 @@
+{% extends "allianceauth/base.html" %}
+
+{% block page_title %}Delete missed meeting report{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Delete missed meeting report</h1>
+    <p>Are you sure you want to delete the report for {{ report.meeting_date|date:"F j, Y" }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete report</button>
+        <a href="{% url 'missed_meetings:my_reports' %}">Cancel</a>
+    </form>
+</div>
+{% endblock %}

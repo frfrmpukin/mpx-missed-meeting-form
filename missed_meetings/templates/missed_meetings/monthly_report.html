@@ -1,0 +1,45 @@
+{% extends "allianceauth/base.html" %}
+
+{% block page_title %}My missed meeting reports{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>My missed meeting reports</h1>
+    <p>Report a meeting you listened to. You can submit one report for each meeting date.</p>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit report</button>
+    </form>
+
+    <h2>{{ selected_month|date:"F Y" }}</h2>
+    <p>{{ report_count }} meeting{{ report_count|pluralize }} reported</p>
+    <nav aria-label="Report months">
+        {% if previous_month %}
+        <a href="{% url 'missed_meetings:my_reports_month' previous_month.year previous_month.month %}">Previous month</a>
+        {% endif %}
+        {% if next_month %}
+        <a href="{% url 'missed_meetings:my_reports_month' next_month.year next_month.month %}">Next month</a>
+        {% endif %}
+    </nav>
+
+    {% if reports %}
+    <ul>
+        {% for report in reports %}
+        <li>
+            {{ report.meeting_date|date:"F j, Y" }}
+            <a href="{% url 'missed_meetings:edit_report' report.pk %}">Edit</a>
+            <a href="{% url 'missed_meetings:delete_report' report.pk %}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No meetings reported for this month.</p>
+    {% endif %}
+
+    {% if can_view_all_reports %}
+    <p><a href="{% url 'missed_meetings:all_reports' %}">View all members' reports</a></p>
+    {% endif %}
+</div>
+{% endblock %}
