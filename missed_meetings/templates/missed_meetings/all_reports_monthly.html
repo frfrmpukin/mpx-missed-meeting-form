@@ -22,6 +22,7 @@
             <tr>
                 <th>Member</th>
                 <th>Meeting date</th>
+                <th>Questions/Comments/Complaints/Concerns</th>
                 {% if can_change_reports or can_delete_reports %}
                 <th>Actions</th>
                 {% endif %}
@@ -32,6 +33,7 @@
             <tr>
                 <td>{{ report.user }}</td>
                 <td>{{ report.meeting_date|date:"F j, Y" }}</td>
+                <td>{{ report.comments|linebreaksbr|default:"—" }}</td>
                 {% if can_change_reports or can_delete_reports %}
                 <td>
                     {% if can_change_reports %}

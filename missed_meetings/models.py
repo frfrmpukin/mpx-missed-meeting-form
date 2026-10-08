@@ -9,6 +9,11 @@ class MissedMeetingReport(models.Model):
         related_name="missed_meeting_reports",
     )
     meeting_date = models.DateField()
+    comments = models.TextField(
+        "Questions/Comments/Complaints/Concerns",
+        blank=True,
+        max_length=500,
+    )
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

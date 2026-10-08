@@ -2,7 +2,8 @@
 
 An Alliance Auth app for members to record missed meetings they listened to.
 Each submission stores the member and meeting date, and members can submit one
-entry per meeting date.
+entry per meeting date. Submissions also include an optional comments field
+for questions, comments, complaints, or concerns, limited to 500 characters.
 
 Members can view, edit, and delete their own submissions. Authorized users can
 view monthly summaries for all members and, when granted the corresponding

@@ -29,6 +29,9 @@
         {% for report in reports %}
         <li>
             {{ report.meeting_date|date:"F j, Y" }}
+            {% if report.comments %}
+            <p>{{ report.comments|linebreaksbr }}</p>
+            {% endif %}
             <a href="{% url 'missed_meetings:edit_report' report.pk %}">Edit</a>
             <a href="{% url 'missed_meetings:delete_report' report.pk %}">Delete</a>
         </li>
