@@ -69,10 +69,9 @@ def my_reports(request, year=None, month=None):
             meeting_date = form.cleaned_data["meeting_date"]
             try:
                 with transaction.atomic():
-                    MissedMeetingReport.objects.create(
-                        user=request.user,
-                        meeting_date=meeting_date,
-                    )
+                    report = form.save(commit=False)
+                    report.user = request.user
+                    report.save()
             except IntegrityError:
                 if MissedMeetingReport.objects.filter(
                     user=request.user,
