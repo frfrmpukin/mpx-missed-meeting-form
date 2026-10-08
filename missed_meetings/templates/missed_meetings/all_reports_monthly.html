@@ -3,53 +3,72 @@
 {% block page_title %}All missed meeting reports{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <h1>All missed meeting reports</h1>
-    <h2>{{ selected_month|date:"F Y" }}</h2>
-    <p>{{ report_count }} meeting{{ report_count|pluralize }} reported by {{ member_count }} member{{ member_count|pluralize }}</p>
-    <nav aria-label="Report months">
+<div class="container-fluid mt-4">
+    <h1 class="h2 mb-2">All missed meeting reports</h1>
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <h2 class="h4 mb-0 me-auto">{{ selected_month|date:"F Y" }}</h2>
+        <span class="text-body-secondary">
+            {{ report_count }} meeting{{ report_count|pluralize }}
+            reported by {{ member_count }} member{{ member_count|pluralize }}
+        </span>
+    </div>
+    <nav aria-label="Report months" class="d-flex gap-2 mb-3">
         {% if previous_month %}
-        <a href="{% url 'missed_meetings:all_reports_month' previous_month.year previous_month.month %}">Previous month</a>
+        <a
+            class="btn btn-sm btn-outline-secondary"
+            href="{% url 'missed_meetings:all_reports_month' previous_month.year previous_month.month %}"
+        >Previous month</a>
         {% endif %}
         {% if next_month %}
-        <a href="{% url 'missed_meetings:all_reports_month' next_month.year next_month.month %}">Next month</a>
+        <a
+            class="btn btn-sm btn-outline-secondary"
+            href="{% url 'missed_meetings:all_reports_month' next_month.year next_month.month %}"
+        >Next month</a>
         {% endif %}
     </nav>
 
     {% if reports %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Member</th>
-                <th>Meeting date</th>
-                <th>Questions/Comments/Complaints/Concerns</th>
-                {% if can_change_reports or can_delete_reports %}
-                <th>Actions</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for report in reports %}
-            <tr>
-                <td>{{ report.user }}</td>
-                <td>{{ report.meeting_date|date:"F j, Y" }}</td>
-                <td>{{ report.comments|linebreaksbr|default:"—" }}</td>
-                {% if can_change_reports or can_delete_reports %}
-                <td>
-                    {% if can_change_reports %}
-                    <a href="{% url 'missed_meetings:edit_report' report.pk %}">Edit</a>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Member</th>
+                    <th scope="col">Meeting date</th>
+                    <th scope="col">Questions/Comments/Complaints/Concerns</th>
+                    {% if can_change_reports or can_delete_reports %}
+                    <th scope="col">Actions</th>
                     {% endif %}
-                    {% if can_delete_reports %}
-                    <a href="{% url 'missed_meetings:delete_report' report.pk %}">Delete</a>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>{{ report.user }}</td>
+                    <td class="text-nowrap">{{ report.meeting_date|date:"F j, Y" }}</td>
+                    <td>{{ report.comments|linebreaksbr|default:"—" }}</td>
+                    {% if can_change_reports or can_delete_reports %}
+                    <td class="text-nowrap">
+                        {% if can_change_reports %}
+                        <a
+                            class="btn btn-sm btn-outline-primary"
+                            href="{% url 'missed_meetings:edit_report' report.pk %}"
+                        >Edit</a>
+                        {% endif %}
+                        {% if can_delete_reports %}
+                        <a
+                            class="btn btn-sm btn-outline-danger"
+                            href="{% url 'missed_meetings:delete_report' report.pk %}"
+                        >Delete</a>
+                        {% endif %}
+                    </td>
                     {% endif %}
-                </td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% else %}
-    <p>No meetings were reported for this month.</p>
+    <div class="alert alert-secondary" role="status">No meetings were reported for this month.</div>
     {% endif %}
 </div>
 {% endblock %}
